@@ -1,0 +1,36 @@
+version: "3.9"
+
+services:
+  app:
+    image: lissy93/dashy:latest
+    restart: always
+    environment:
+      NODE_ENV: production
+    expose:
+      - 80
+    volumes:
+      - ${BASE_VOLUME}/config.yml:/app/public/conf.yml
+    networks:
+      - internal
+      - nginx
+    healthcheck:
+      test: ['CMD', 'node', '/app/services/healthcheck']
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    deploy:
+      resources:
+        limits:
+          cpus: ${LIMIT_APP_CPU:-1}
+          memory: ${LIMIT_APP_RAM:-128M}
+        reservations:
+          cpus: "0.1"
+          memory: 16M
+
+networks:
+  internal:
+  nginx:
+    external: true
+  monitoring:
+    external: true
