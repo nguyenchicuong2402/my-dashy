@@ -9,7 +9,7 @@ services:
     expose:
       - 80
     volumes:
-      - ${BASE_VOLUME}:/app/public/conf.yml
+      - ${BASE_VOLUME}:/app/public
     networks:
       - internal
       - nginx
